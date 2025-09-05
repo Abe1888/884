@@ -7,28 +7,25 @@ const nextConfig = {
       rules: {
         '*.svg': {
           loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
+          as: '*.js'
+        }
+      }
+    }
   },
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    removeConsole: process.env.NODE_ENV === 'production'
   },
   images: {
-    domains: ['images.unsplash.com', 'via.placeholder.com'],
+    domains: ['images.unsplash.com', 'via.placeholder.com']
   },
   poweredByHeader: false,
   reactStrictMode: true,
   swcMinify: true,
-  // Optimize for faster navigation
   onDemandEntries: {
     maxInactiveAge: 60 * 1000, // 1 minute
-    pagesBufferLength: 5,
+    pagesBufferLength: 5
   },
-  // Enable static optimization
   trailingSlash: false,
-  // Optimize bundle splitting
   webpack: (config, { dev, isServer }) => {
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
@@ -39,20 +36,25 @@ const nextConfig = {
             test: /[\\/]node_modules[\\/]/,
             name: 'vendors',
             chunks: 'all',
-            priority: 10,
+            priority: 10
           },
           common: {
             name: 'common',
             minChunks: 2,
             chunks: 'all',
             priority: 5,
-            reuseExistingChunk: true,
-          },
-        },
+            reuseExistingChunk: true
+          }
+        }
       }
     }
     return config
   },
+  // Ensure absolute imports with @ alias work correctly
+  experimental: {
+    ...this.experimental,
+    externalDir: true
+  }
 }
 
 module.exports = nextConfig
