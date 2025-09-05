@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, memo, useCallback, useRef } from 'react';
-import { Calendar, Clock, Truck, CheckCircle2, Activity } from 'lucide-react';
+import { Calendar, Clock, MapPin, Truck, ChevronLeft, ChevronRight, Filter, CheckCircle2, Activity, RefreshCw, AlertTriangle } from 'lucide-react';
 import { useVehiclesOptimized, useLocationsOptimized } from '@/lib/hooks/useOptimizedSWR';
 import { useProjectSettings } from '@/lib/hooks/useProjectSettings';
 import { calculateDateForDay } from '@/lib/utils/projectUtils';
@@ -13,7 +13,7 @@ const OptimizedGanttChart = memo(() => {
   const [selectedLocation, setSelectedLocation] = useState<string>('All');
   const [viewMode, setViewMode] = useState<'day' | 'week'>('day');
   const renderCache = useRef<Map<string, any>>(new Map());
-  
+
   const projectStartDate = projectSettings?.project_start_date || new Date().toISOString().split('T')[0];
 
   const timelineData = useMemo(() => {
@@ -73,7 +73,7 @@ const OptimizedGanttChart = memo(() => {
       <button onClick={() => window.location.reload()} className="btn-secondary">Refresh Data</button>
     </div>
   );
-  
+
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
@@ -107,11 +107,12 @@ const OptimizedGanttChart = memo(() => {
       <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
         <div className="overflow-x-auto">
           <div className="min-w-full">
+            {/* Timeline Header */}
             <div className="bg-slate-50 border-b border-slate-200 p-4 grid grid-cols-12 gap-2">
               <div className="col-span-3 text-sm font-medium text-slate-700">Vehicle</div>
               <div className="col-span-2 text-sm font-medium text-slate-700">Location</div>
               <div className="col-span-7 grid grid-cols-7 gap-1">
-                {timelineData.days.map((day: number) => (
+                {timelineData.days.map(day => (
                   <div key={day} className="text-center">
                     <div className="text-xs font-medium text-slate-700">
                       Day {day}
@@ -124,8 +125,9 @@ const OptimizedGanttChart = memo(() => {
               </div>
             </div>
 
+            {/* Timeline Rows */}
             <div className="divide-y divide-slate-200">
-              {timelineData.vehicles.map((vehicle) => (
+              {timelineData.vehicles.map(vehicle => (
                 <VehicleRow
                   key={vehicle.id}
                   vehicle={vehicle}
@@ -144,6 +146,7 @@ const OptimizedGanttChart = memo(() => {
       <div className="bg-white border border-slate-200 rounded-lg p-6">
         <h3 className="text-sm font-semibold text-slate-900 mb-4">Legend</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Status Legend */}
           <div>
             <h4 className="text-xs font-medium text-slate-700 mb-2">Status</h4>
             <div className="space-y-2">
@@ -152,6 +155,8 @@ const OptimizedGanttChart = memo(() => {
               <div className="flex items-center space-x-2"><div className="w-4 h-4 bg-slate-300 rounded-md"></div><span className="text-xs text-slate-600">Pending</span></div>
             </div>
           </div>
+
+          {/* Location Legend */}
           <div>
             <h4 className="text-xs font-medium text-slate-700 mb-2">Locations</h4>
             <div className="space-y-2">
@@ -161,6 +166,31 @@ const OptimizedGanttChart = memo(() => {
                   <span className="text-xs text-slate-600">{location.name}</span>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Equipment Legend */}
+          <div>
+            <h4 className="text-xs font-medium text-slate-700 mb-2">Equipment</h4>
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <div className="w-4 h-4 bg-blue-100 rounded-md flex items-center justify-center"><div className="w-2 h-2 bg-blue-600 rounded-full"></div></div>
+                <span className="text-xs text-slate-600">GPS Device</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-4 h-4 bg-green-100 rounded-md flex items-center justify-center"><div className="w-2 h-2 bg-green-600 rounded-full"></div></div>
+                <span className="text-xs text-slate-600">Fuel Sensor</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Timeline Info */}
+          <div>
+            <h4 className="text-xs font-medium text-slate-700 mb-2">Timeline</h4>
+            <div className="space-y-1 text-xs text-slate-600">
+              <div>Total Duration: {timelineData.maxDay - timelineData.minDay + 1} days</div>
+              <div>Start: Day {timelineData.minDay}</div>
+              <div>End: Day {timelineData.maxDay}</div>
             </div>
           </div>
         </div>
@@ -190,7 +220,7 @@ const VehicleRow = memo(({ vehicle, days, getLocationColor, getStatusColor, proj
         <span className="text-sm text-slate-700">{vehicle.location}</span>
       </div>
       <div className="col-span-7 grid grid-cols-7 gap-1 h-8">
-        {days.map((day: number) => (
+        {days.map(day => (
           <div key={day} className="relative">
             {vehicle.day === day && (
               <div className={`h-6 rounded-md flex items-center justify-center ${getStatusColor(vehicle.status)}`}>
