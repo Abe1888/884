@@ -28,6 +28,7 @@ const navigationItems = [
   { id: 'gantt', label: 'Gantt Chart', icon: Calendar, href: '/gantt' },
   { id: 'tasks', label: 'Task Management', icon: CheckSquare, href: '/tasks' },
   { id: 'team', label: 'Team Management', icon: Users, href: '/team' },
+  { id: 'data-management', label: 'Data Management', icon: MapPin, href: '/data-management' },
   { id: 'system-status', label: 'System Status', icon: Activity, href: '/system-status' },
 ]
 

@@ -63,12 +63,15 @@ export function ProjectCountdown({
     return () => clearInterval(timer)
   }, [startDate, isActive, onCountdownComplete])
 
+  // Initial calculation
   useEffect(() => {
     const remaining = calculateTimeRemaining(startDate)
     setTimeRemaining(remaining)
   }, [startDate])
 
-  const formatNumber = (num: number): string => num.toString().padStart(2, '0')
+  const formatNumber = (num: number): string => {
+    return num.toString().padStart(2, '0')
+  }
 
   const isProjectStarted = timeRemaining.total <= 0
   const isStartingSoon = timeRemaining.days <= 7 && timeRemaining.total > 0
@@ -131,25 +134,36 @@ export function ProjectCountdown({
             {/* Countdown Display */}
             <div className="grid grid-cols-4 gap-4 mb-6">
               <div className="text-center">
-                <div className={`text-3xl font-bold ${isStartingSoon ? 'text-orange-600' : 'text-primary-600'}`}>
+                <div className={`text-3xl font-bold ${
+                  isStartingSoon ? 'text-orange-600' : 'text-primary-600'
+                }`}>
                   {formatNumber(timeRemaining.days)}
                 </div>
                 <div className="text-xs text-gray-600 font-medium">DAYS</div>
               </div>
+              
               <div className="text-center">
-                <div className={`text-3xl font-bold ${isStartingSoon ? 'text-orange-600' : 'text-primary-600'}`}>
+                <div className={`text-3xl font-bold ${
+                  isStartingSoon ? 'text-orange-600' : 'text-primary-600'
+                }`}>
                   {formatNumber(timeRemaining.hours)}
                 </div>
                 <div className="text-xs text-gray-600 font-medium">HOURS</div>
               </div>
+              
               <div className="text-center">
-                <div className={`text-3xl font-bold ${isStartingSoon ? 'text-orange-600' : 'text-primary-600'}`}>
+                <div className={`text-3xl font-bold ${
+                  isStartingSoon ? 'text-orange-600' : 'text-primary-600'
+                }`}>
                   {formatNumber(timeRemaining.minutes)}
                 </div>
                 <div className="text-xs text-gray-600 font-medium">MINUTES</div>
               </div>
+              
               <div className="text-center">
-                <div className={`text-3xl font-bold ${isStartingSoon ? 'text-orange-600' : 'text-primary-600'}`}>
+                <div className={`text-3xl font-bold ${
+                  isStartingSoon ? 'text-orange-600' : 'text-primary-600'
+                }`}>
                   {formatNumber(timeRemaining.seconds)}
                 </div>
                 <div className="text-xs text-gray-600 font-medium">SECONDS</div>
@@ -158,15 +172,23 @@ export function ProjectCountdown({
 
             {/* Status Indicator */}
             <div className={`text-center p-4 rounded-lg border ${
-              isStartingSoon ? 'bg-orange-50 border-orange-200' : 'bg-primary-50 border-primary-200'
+              isStartingSoon 
+                ? 'bg-orange-50 border-orange-200' 
+                : 'bg-primary-50 border-primary-200'
             }`}>
               <div className="flex items-center justify-center space-x-2 mb-2">
-                <Clock className={`w-4 h-4 ${isStartingSoon ? 'text-orange-600' : 'text-primary-600'}`} />
-                <span className={`text-sm font-medium ${isStartingSoon ? 'text-orange-800' : 'text-primary-800'}`}>
+                <Clock className={`w-4 h-4 ${
+                  isStartingSoon ? 'text-orange-600' : 'text-primary-600'
+                }`} />
+                <span className={`text-sm font-medium ${
+                  isStartingSoon ? 'text-orange-800' : 'text-primary-800'
+                }`}>
                   {isStartingSoon ? 'Starting Soon!' : 'Countdown Active'}
                 </span>
               </div>
-              <p className={`text-xs ${isStartingSoon ? 'text-orange-700' : 'text-primary-700'}`}>
+              <p className={`text-xs ${
+                isStartingSoon ? 'text-orange-700' : 'text-primary-700'
+              }`}>
                 {isStartingSoon 
                   ? 'Project starts in less than a week. Prepare for installation activities.'
                   : 'Monitor the countdown and prepare for the upcoming installation project.'
@@ -199,6 +221,3 @@ export function ProjectCountdown({
     </div>
   )
 }
-
-// ✅ Add default export for Netlify build
-export default ProjectCountdown

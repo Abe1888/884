@@ -63,6 +63,3 @@ export class ErrorBoundary extends Component<Props, State> {
     return this.props.children
   }
 }
-
-// ✅ Add default export for Netlify build
-export default ErrorBoundary
